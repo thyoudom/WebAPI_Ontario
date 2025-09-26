@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            
+        }
+        .aline-center{
+            text-align: center;
+        }
+        .card h3 {
+            margin-top: 0;
+        }
+        .card p {
+            color: #555;
+        }
+        .card .price {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .container p strong{
+            word-break: break-all; /* Breaks words at any character to fit the container */
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Our Products</h2>
+    <div id="products-container" class="container">
+        </div>
+<div class="container mt-5">
+  <div id="card-container" class="card" style="width: 18rem;">
+    <img id="card-image" src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 id="card-title" class="card-title">Card Title</h5>
+      <p id="card-text" class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+  </div>
+</div>
+    <script>
+        const productsContainer = document.getElementById('products-container');
+
+        // Function to fetch data from the API
+        async function fetchProducts() {
+            try {
+                // Make sure this URL is correct
+                const response = await fetch('https://api.ontario.edu.kh/curriculumReadData.php');
+                
+                // Check if the response is successful
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const products = await response.json();
+                
+                // Display the products in cards
+                displayProducts(products);
+            } catch (error) {
+                console.error('Failed to fetch products:', error);
+                productsContainer.innerHTML = '<p>Error loading products.</p>';
+            }
+        }
+
+        // Function to create and display product cards
+        function displayProducts(products) {
+            if (products.length === 0) {
+                productsContainer.innerHTML = '<p>No products to display.</p>';
+                return;
+            }
+
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+
+                card.innerHTML = `
+                    <h3 class="aline-center">${product.title}</h3>
+                    <img src="https://api.ontario.edu.kh/${product.image_file}" alt="Banner Image" style="height: 50px; width:40px">
+                    <p>${product.description}</p>
+                `;
+
+                productsContainer.appendChild(card);
+            });
+        }
+
+        // Call the function to start the process
+        fetchProducts();
+        $(document).ready(function() {
+  $.getJSON('https://api.ontario.edu.kh/curriculumReadData.php', function(data) {
+    // Data is successfully fetched, now populate the card
+    $('#card-title').text(data.title);
+    $('#card-text').text(data.description);
+    
+    // Set placeholder image and alt text
+    $('#card-image').attr('src', 'https://via.placeholder.com/150');
+    $('#card-image').attr('alt', data.title);
+  }).fail(function(error) {
+    console.log('Error fetching data:', error);
+    // You can handle errors here as well
+    $('#card-title').text('Error');
+    $('#card-text').text('Failed to load data. Please try again.');
+  });
+});
+  
+    </script>
+</body>
+</html>

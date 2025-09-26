@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Battambang:wght@100;300;400;700;900&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Khmer&display=swap"
+        rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="asset/bootstrap.min.css">
+    <link rel="stylesheet" href="stylecss/index.css">
+    
+    <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="script/function/menu.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("#sidebarMenu").load("menu.html");
+        });
+
+    </script>
+    </script>
+</head>
+
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger fixed-top shadow-sm " id="navbarTop">
+
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar bg-danger text-white collapse d-lg-flex flex-column overflow-auto" id="sidebarMenu">
+
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="content" id="contentMain">
+        <div class="container mt-5">
+            
+        </div>
+        <iframe id="content-frame" class="container" width="100%" height="400px" frameborder="0"
+            style=" height: 100vh;overflow: hidden;"></iframe>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer bg-danger fixed-bottom shadow-sm">
+        <p class="text-center my-0">&copy; 2025  <a href="#" style="color: aliceblue;text-decoration: none;">Ontario</a>.</p>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        xintegrity="sha384-YvpcrYf0tY3lHB60NN/6S4y52s8kX+A6X3A2K+R8l/YfV5BfP4G8H7T5GqK5zL" crossorigin="anonymous">
+        </script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="script/function/userload.js"></script>
+    <script src="script/function/userlog.js"></script>
+    </script>
+</body>
+
+</html>

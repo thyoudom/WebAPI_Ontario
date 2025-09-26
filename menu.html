@@ -1,0 +1,175 @@
+
+<ul class="nav nav-pills flex-column mb-auto">
+    
+    <li class="nav-item">
+        <a href="#" class="nav-link active" aria-current="page" data-page="home" onclick="loadContent('home')">
+            <i class="bi bi-house-door me-2"></i>Dashboard
+        </a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-bs-toggle="collapse"
+            data-bs-target="#pages-collapse" aria-expanded="false" data-page="pages">
+            <i class="bi bi-file-earmark-text me-2"></i> About Us
+        </a>
+        <div class="collapse" id="pages-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ps-4">
+                <li class="spacingli"></li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" aria-current="page" data-page="bannerSlide" onclick="loadContent('bannerSlide')">
+                        <i class="bi bi-images"></i>&nbsp; Banner Slide
+                    </a>
+                </li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" aria-current="page" data-page="curriculum" onclick="loadContent('curriculum')"><i class="bi bi-amd"></i>&nbsp; CURRICULUM</a> </li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page2" data-page="facilities" onclick="loadContent('facilities')"><i class="bi bi-building-fill-add"></i> &nbsp; SCHOOL FACILITIES</a></li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page3"><i class="bi bi-chat-right-quote-fill"></i> &nbsp; PARENT TESTIMONIAL</a></li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page4"><i class="bi bi-person-raised-hand"></i>&nbsp; QUESTIONS</a></li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page1"><i class="bi bi-book-half"></i> &nbsp; VISION MISSION</a> </li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page2">ORGANIZATIONAL CHART</a></li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page3">WELCOME MESSAGES</a></li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page4">LICENCES & PARTNERS</a></li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page5">PARENT TESTIMONIAL</a></li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page6">CURRICULUM OVERVIEW</a> </li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page7">TODDLER CLASS</a></li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page8">KINDERGARTEN</a></li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page9">PRIMARY SCHOOL</a></li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page10">Secoundary SCHOOL</a></li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page11">ACADEMIC CALENDAR</a></li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page12">STUDENT ACTIVITIES</a> </li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page13">PARENTING TIPS</a></li>
+                <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page14">RESEARCH ARTICLES</a></li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a href="#" class="nav-link" aria-current="page" data-page="NEWS & EVENTS">
+            <i class="bi bi-house-door me-2"></i>NEWS & EVENTS
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="#" class="nav-link" aria-current="page" data-page="CAREERS">
+            <i class="bi bi-house-door me-2"></i>CAREERS
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="#" class="nav-link" aria-current="page" data-page="TUITION FEE">
+            <i class="bi bi-house-door me-2"></i>TUITION FEE
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="#" class="nav-link" aria-current="page" data-page="CONTACT US">
+            <i class="bi bi-house-door me-2"></i>CONTACT US
+        </a>
+    </li>
+</ul>
+
+<!-- Profile dropdown for mobile view -->
+<div class="profile-mobile d-lg-none">
+    <h6 class="fw-bold text-white-50">Profile</h6>
+    <ul class="nav nav-pills flex-column mt-2">
+        <li class="nav-item">
+            <a class="nav-link text-white" href="#">
+                <i class="bi bi-gear me-2"></i>
+                <p class="user-email text-muted" id="userEmailDisplay"><span class="material-icons">Settings</span> Loading user info...</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" href="#">
+                <i class="bi bi-key me-2"></i>Change Password
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" href="#">
+                <i class="bi bi-box-arrow-right me-2"></i>Logout
+            </a>
+        </li>
+    </ul>
+</div>
+<script>
+    const navbarTop = document.getElementById('navbarTop');
+    const sidebarMenu = document.getElementById('sidebarMenu');
+    const allLinks = document.querySelectorAll('.sidebar .nav-link');
+    const pagesCollapseEl = document.getElementById('pages-collapse');
+    const pagesCollapseInstance = pagesCollapseEl ? new bootstrap.Collapse(pagesCollapseEl, { toggle: false }) : null;
+
+    allLinks.forEach(link => {
+
+        link.addEventListener('click', function (e) {
+            // Prevent the default anchor behavior for dropdowns
+            if (this.classList.contains('dropdown-toggle') && this.getAttribute('data-bs-toggle') === 'collapse') {
+                // Let Bootstrap handle the collapse
+                return;
+            }
+
+            // Remove active class from all links
+            allLinks.forEach(item => {
+                item.classList.remove('active');
+                // For dropdown parents, also remove the active class
+                const parentDropdown = item.closest('.dropdown');
+                if (parentDropdown) {
+                    parentDropdown.querySelector('.dropdown-toggle').classList.remove('active');
+                }
+            });
+
+            // Add active class to the clicked link
+            this.classList.add('active');
+
+            // If a child of a dropdown is clicked, add 'active' to its parent and close the dropdown
+            const parentUl = this.closest('.collapse');
+            if (parentUl) {
+                const parentDropdownToggle = parentUl.previousElementSibling;
+                if (parentDropdownToggle) {
+                    parentDropdownToggle.classList.add('active');
+                }
+                // Close the parent dropdown
+                if (pagesCollapseInstance) {
+                    pagesCollapseInstance.hide();
+                }
+            }
+        });
+    });
+
+    function loadContent(page) {
+        let url;
+        switch (page) {
+            case 'home':
+                url = 'home.html';
+                break;
+            case 'bannerSlide':
+                url = 'slide_casual.html';
+                break;
+            case 'curriculum':
+                url = 'curriculum.html';
+                break;
+            case 'facilities':
+                url = 'facilities.html';
+                break;
+            default:
+                url = 'home.html';
+        }
+        document.getElementById('content-frame').src = url;
+    }
+
+    // Optionally, load a default page on initial load
+    document.addEventListener('DOMContentLoaded', () => {
+        loadContent('home');
+    });
+
+</script>
