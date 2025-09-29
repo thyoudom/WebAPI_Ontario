@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Item Detail Display</title>
+    <style>
+        /* Simple CSS for display */
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        #item-container { max-width: 600px; margin: auto; border: 1px solid #ccc; padding: 20px; }
+        #item-image { max-width: 100%; height: auto; margin-bottom: 15px; }
+        #item-title { color: #333; }
+        #item-description { color: #666; }
+    </style>
+</head>
+<body>
+    <div id="item-container">
+        <h1 id="item-title">Loading Image...</h1>
+        <h3 id="titleData"></h3>
+        <img id="item-image" src="" alt="Item Image" style="display:none;">
+        <p id="item-description"></p>
+    </div>
+
+    <script>
+        // --- Configuration ---
+        const API_BASE_URL = 'https://api.ontario.edu.kh/TestAIP.php?id=3'; // IMPORTANT: Update this URL!
+        const IMAGE_BASE_URL = 'https://api.ontario.edu.kh/'; // Path where your images are stored
+
+        function fetchData() {
+            const apiUrl = `https://api.ontario.edu.kh/TestAIP.php?id=3`;
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        // Throw an error for 404, 500, etc.
+                        return response.json().then(err => { throw new Error(err.message || response.statusText); });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.status === 'success') {
+                        const item = data.data;
+                        document.getElementById('item-title').textContent = item.title;
+                        document.getElementById('item-description').textContent = item.description;
+                        
+                        // Handle the image
+                        const imgElement = document.getElementById('item-image');
+                        imgElement.src = `${IMAGE_BASE_URL}${item.image_file}`;
+                        imgElement.alt = item.title;
+                        imgElement.style.display = 'block'; // Show the image
+                    } else {
+                        throw new Error(data.message || 'Unknown API error.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    document.getElementById('item-title').textContent = 'Error Loading Item';
+                    document.getElementById('item-description').textContent = 'Could not fetch item details.';
+                    document.getElementById('item-image').style.display = 'none';
+                });
+        }
+
+        // Load item 42 on page load
+        document.addEventListener('DOMContentLoaded', fetchData);
+    </script>
+</body>
+</html>

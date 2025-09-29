@@ -145,40 +145,136 @@ body {
 .dropdown-toggle[aria-expanded="true"]::after {
     transform: rotate(0.5turn);
 }
+
 .battambang-thin {
-  font-family: "Battambang", system-ui;
-  font-weight: 100;
-  font-style: normal;
+    font-family: "Battambang", system-ui;
+    font-weight: 100;
+    font-style: normal;
 }
 
 .battambang-light {
-  font-family: "Battambang", system-ui;
-  font-weight: 300;
-  font-style: normal;
+    font-family: "Battambang", system-ui;
+    font-weight: 300;
+    font-style: normal;
 }
 
 .battambang-regular {
-  font-family: "Battambang", system-ui;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Battambang", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .battambang-bold {
-  font-family: "Battambang", system-ui;
-  font-weight: 700;
-  font-style: normal;
+    font-family: "Battambang", system-ui;
+    font-weight: 700;
+    font-style: normal;
 }
 
 .battambang-black {
-  font-family: "Battambang", system-ui;
-  font-weight: 900;
-  font-style: normal;
+    font-family: "Battambang", system-ui;
+    font-weight: 900;
+    font-style: normal;
 }
+
 iframe {
-  -ms-overflow-style: none;
+    -ms-overflow-style: none;
 }
-.display-fix{
+
+.display-fix {
     position: fixed;
     top: 0;
     width: 100%;
+}
+
+.tableID {
+    width: 5%;
+    text-align: center;
+}
+
+.tabltitle {
+    width: 20%;
+}
+
+.tabledes {
+    width: 30%;
+}
+
+.tableimage {
+    width: 3%;
+    text-align: center;
+}
+
+.tablestatus {
+    width: 5%;
+    text-align: center;
+}
+
+.tableimage {
+    width: 10%;
+    text-align: center;
+}
+
+.tableaction {
+    width: 20%;
+    text-align: center;
+}
+.text-center-table{
+    text-align: center;
+}
+.battambang-thin {
+    font-family: "Battambang", system-ui;
+    font-weight: 100;
+    font-style: normal;
+}
+
+.battambang-light {
+    font-family: "Battambang", system-ui;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.battambang-regular {
+    font-family: "Battambang", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.battambang-bold {
+    font-family: "Battambang", system-ui;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.battambang-black {
+    font-family: "Battambang", system-ui;
+    font-weight: 900;
+    font-style: normal;
+}
+
+.panel-container {
+    /* Set a fixed height for the entire panel */
+    height: 100vh;
+    width: 100%;
+    border: 1px solid #ffffff;
+    display: flex;
+    /* Use flexbox for a flexible layout */
+    flex-direction: column;
+    /* Stack the header and body vertically */
+}
+
+.panel-header {
+    position: sticky;
+    /* Sticky is often a better choice for panels */
+    top: 0;
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+.panel-body {
+    flex-grow: 1;
+    /* Allow the body to take up the remaining space */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    padding: 15px;
 }

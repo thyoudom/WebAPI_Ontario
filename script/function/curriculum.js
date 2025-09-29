@@ -1,41 +1,31 @@
-const btnsubmit = document.getElementById('saveBtn');
-const create_by = document.getElementById('createby');
-const create_date = document.getElementById('createdate');
-const updat_date = document.getElementById('updatedate');
-const Active = document.getElementById('ActiveClass');
-const current_image_preview = document.getElementById('current_image_preview');
-const loggedEmail = sessionStorage.getItem('loggedInUserEmail');
 $(document).ready(function () {
-    // Initialize Quill editor
-    const quill = new Quill('#editor', {
+    // --- API Configuration ---
+    const btnsubmit = document.getElementById('submitBtn')
+    const API_URL = 'https://api.ontario.edu.kh/curriculum.php'; // **<-- CHANGE THIS TO YOUR ACTUAL API PATH**
+    const quill_EN = new Quill('#description_EN_editor', {
         theme: 'snow'
     });
-    const btnsubmit = document.getElementById('saveBtn')
-    // Initialize DataTables
-    const dataTable = $('#bannerTable').DataTable({
+    const quill_KH = new Quill('#description_KH_editor', {
+        theme: 'snow'
+    });
+    const table = $('#curriculumTable').DataTable({
         "processing": true,
-        "serverSide": true,
+        "serverSide": false, // Use client-side processing for this example
         "ajax": {
-            "url": "https://api.ontario.edu.kh/curriculum.php?action=read", // API endpoint for reading data
-            "type": "GET"
+            "url": API_URL + '?action=read',
+            "dataSrc": "data"
         },
         "columns": [
             {
-                "data": "id", className: 'battambang-regular',
+                "data": "id", className: 'battambang-regular text-center',
                 render: function (data, type, row, meta) {
                     return meta.row + 1; // Auto-incrementing value
                 }
             },
-            { "data": "title", className: 'battambang-regular' },
+            { "data": "title_En", className: 'battambang-regular' },
+            { "data": "title_KH", className: 'battambang-regular' },
             {
-                "data": "description", className: 'battambang-regular',
-                "render": function (data) {
-                    // Display a truncated version of the description
-                    return data.length > 50 ? data.substr(0, 50) + '...' : data;
-                }
-            },
-            {
-                "data": "image_file",
+                "data": "images", className: 'battambang-regular text-center',
                 "render": function (data, type, row) {
                     if (data) {
                         return `<img src="https://api.ontario.edu.kh/${data}" alt="Banner Image" style="height: 50px; width:40px">`;
@@ -43,190 +33,123 @@ $(document).ready(function () {
                     return '';
                 }
             },
-            { "data": "status", className: 'battambang-regular' },
-            { "data": "create_by", "visible": false },
-            { "data": "create_date", "visible": false },
-            { "data": "update_date", "visible": false },
             {
-                "data": null,
-                "render": function (data, type, row) {
-                    return `
-                        <button class="btn btn-warning btn-sm edit-btn" data-id="${data.id}"><i class="bi bi-pencil-square"></i>Edit</button>
-                        <button class="btn btn-danger btn-sm delete-btn" data-id="${data.id}"><i class="bi bi-trash3"></i> Delete</button>
-                    `;
+                "data": "status", className: 'battambang-regular text-center', "render": function (data) {
+                    return data == '1' ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-secondary">Inactive</span>';
                 }
-            }
+            },
+            {
+                "data": null, "defaultContent": `
+                <button class="btn btn-sm btn-warning edit-btn"><i class="bi bi-pencil-square"></i> Edit</button>
+                <button class="btn btn-sm btn-danger delete-btn"><i class="bi bi-trash3"></i> Delete</button>
+            `}
         ]
     });
 
-    // Reset modal form on hide
-    $('#bannerModal').on('hidden.bs.modal', function () {
-        $('#bannerForm')[0].reset();
-        $('#banner_id').val('');
-        quill.root.innerHTML = '';
-        $('#bannerModalLabel').text('Add Banner');
-        $('#saveBtn').text('Save changes');
-        $('#current_image_preview').hide();
+    // --- Modal Reset on New Button Click ---
+    $('#addNewBtn').on('click', function () {
+        $('#curriculumModalLabel').text('Create Curriculum');
+        $('#action').val('create');
+        $('#curriculumForm')[0].reset();
+        $('#curriculum_id').val('');
+        quill_EN.setContents([]); // Clear Quill editor
+        quill_KH.setContents([]);
+        $('#currentImageContainer').hide();
+        $('#image_preview_img').attr('src', 'https://w7.pngwing.com/pngs/819/548/png-transparent-photo-image-landscape-icon-images-thumbnail.png')
+        $('#images').prop('required', true); // Require image on create
+        btnsubmit.disabled = false;
+        btnsubmit.innerHTML = '<i class="bi bi-plus-circle-fill"></i> Submit Data';
+
     });
 
-    // Handle "Add New Banner" button click
-    $('#addBannerBtn').on('click', function () {
-        // Set current date/time for new record
-        const now = new Date();
-        const formattedDate = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
-        $('#create_date').val(formattedDate);
-        $('#update_date').val(formattedDate);
-    });
+    // --- EDIT Button Click Handler ---
+    $('#curriculumTable tbody').on('click', '.edit-btn', function () {
+        const data = table.row($(this).parents('tr')).data();
+        const curriculumId = data.id;
+        btnsubmit.disabled = false;
+        btnsubmit.innerHTML = '<i class="bi bi-pencil-square"></i> Update Data</span>';
+        // Fetch single record data
+        $.get(API_URL + '?action=get_single&id=' + curriculumId, function (response) {
+            $('#curriculumModalLabel').text('Update Curriculum');
+            $('#action').val('update');
+            $('#curriculum_id').val(response.id);
+            $('#title_En').val(response.title_En);
+            $('#title_KH').val(response.title_KH);
+            $('#status').val(response.status);
+            $('#image_preview_img').attr('src', '${}')
 
-    // Handle form submission (Create/Update)
-    $('#bannerForm').on('submit', function (e) {
-        e.preventDefault();
-        btnsubmit.disabled = true;
-        btnsubmit.innerHTML = '<span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span><span role="status">Loading...</span>';
+            // Set Quill content
+            quill_EN.root.innerHTML = response.description_EN;
+            quill_KH.root.innerHTML = response.description_KH;
 
-        // Get content from Quill editor and set it to the hidden input
-        $('#description').val(quill.root.innerHTML);
-
-        const formData = new FormData(this);
-        const bannerId = $('#banner_id').val();
-        const action = bannerId ? 'update' : 'create';
-
-
-        $.ajax({
-            url: `https://api.ontario.edu.kh/curriculum.php?action=${action}`,
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (result) {
-                Cleardata();
-                $('#bannerModal').modal('hide');
-                var table = $('#bannerTable').DataTable();
-                table.ajax.reload(); // Reload the data table
-            }, error: function (errormesage) {
-                toastr.error('Error: ' + data.message)
+            // Handle image display and optional requirement
+            $('#images').prop('required', false); // Not required for update
+            if (response.images) {
+                $('#image_preview_img').attr('src','https://api.ontario.edu.kh/'+response.images); // Assumes API returns full path
+            } else {
             }
 
+            // Show modal
+            $('#curriculumModal').modal('show');
+        }).fail(function () {
+            alert('Failed to fetch data for editing.');
         });
     });
 
-    // Handle "Edit" button click
-    $(document).on('click', '.edit-btn', function () {
-        const id = $(this).data('id');
-        $.ajax({
-            url: `https://api.ontario.edu.kh/curriculum.php?action=read&id=${id}`,
-            type: 'GET',
-            success: function (response) {
-                const data = JSON.parse(JSON.stringify(response));
-                const create_by = document.getElementById('createby');
-                const create_date = document.getElementById('createdate');
-                const updat_date = document.getElementById('updatedate');
-                create_by.style.display = 'none';
-                create_date.style.display = 'none';
-                updat_date.style.display = 'none';
-                $('#bannerModal').modal('show');
-                if (data.status === 'success' && data.data.length > 0) {
-                    const banner = data.data[0];
-                    $('#banner_id').val(banner.id);
-                    $('#title').val(banner.title);
-                    quill.root.innerHTML = banner.description;
-                    $('#status').val(banner.status);
-                    $('#create_by').val(loggedEmail);
-                    $('#create_date').val(banner.create_date);
-                    $('#update_date').val(banner.update_date);
-
-                    if (banner.image_file) {
-                        $('#image_preview_img').attr('src', 'https://api.ontario.edu.kh/' + banner.image_file);
-                        $('#current_image_preview').show();
-                    } else {
-                        $('#current_image_preview').hide();
-                    }
-
-                    $('#bannerModalLabel').text('Edit Banner');
-                    $('#saveBtn').text('Update changes');
-                    $('#bannerModal').modal('show');
-                } else {
-                    alert('Banner not found.');
-                }
-            }
-        });
-    });
-
-    // Handle "Delete" button click
-    $(document).on('click', '.delete-btn', function () {
-        const id = $(this).data('id');
-        if (confirm('Are you sure you want to delete this banner?')) {
+    // --- DELETE Button Click Handler ---
+    $('#curriculumTable tbody').on('click', '.delete-btn', function () {
+        const data = table.row($(this).parents('tr')).data();
+        const curriculumId = data.id;
+        const messagedelete = curriculumId ? 'Deleted':'';
+        if (confirm('Are you sure you want to delete curriculum ID ' + curriculumId + '?')) {
             $.ajax({
-                url: `https://api.ontario.edu.kh/curriculum.php?action=delete&id=${id}`,
-                type: 'POST',
-                success: function (result) {
-                    var table = $('#bannerTable').DataTable();
-                    table.ajax.reload(); // Reload the data table
+                url: API_URL + '?action=delete&id=' + curriculumId,
+                type: 'DELETE', // DELETE method is better REST practice
+                success: function (response) {
+                    toastr.success('Your data has ' + messagedelete, messagedelete +' Successful');
+                    table.ajax.reload(); // Reload DataTables
                 },
-                error: function (errormessage) {
-                    toastr.error("This Item is already exists in Database", "Service Response");
+                error: function (xhr) {
+                    alert('Error deleting curriculum: ' + xhr.responseJSON.message);
                 }
-
             });
         }
     });
 
+    // --- Form Submission (CREATE and UPDATE) ---
+    $('#curriculumForm').on('submit', function (e) {
+        e.preventDefault();
+        const prid = $('#curriculum_id').val();
+        const messageAction = prid ? 'Updated' : 'Created';
+        const messageActionheader = prid ? 'Updated' : 'Created';
 
-    $(document).on('click', '.status-toggle', function () {
+        btnsubmit.disabled = true;
+        btnsubmit.innerHTML = '<span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span><span role="status">Uploading...</span>';
 
-    });
-});
-$('.update-status').on('click', function () {
-    let $row = $(this).closest('tr');
+        // 1. Get content from Quill Editors and set hidden inputs
+        $('#description_EN_hidden').val(quill_EN.root.innerHTML);
+        $('#description_KH_hidden').val(quill_KH.root.innerHTML);
 
-    // Extract values from the cells within that row
-    let name = $row.find('td:eq(1)').text(); // First td (index 0)
-});
-function Aprove(id, title) {
-    const titleA = document.getElementById('title');
-    titleA = title.val()
-    var currentStatus = $(this).data('status');
-    var newStatus = (currentStatus === 'Active') ? 'Inactive' : 'Active';
-    alert(titleAs)
-    $.ajax({
-        url: `https://api.ontario.edu.kh/curriculum.php?action=update&id=${id}`, // This is your server-side script
-        type: 'POST',
-        data: { id: id, status: newStatus, },
-        success: function (response) {
-            if (response.success) {
-                var table = $('#bannerTable').DataTable();
-                table.ajax.reload(); // Reload the data table
-            } else {
-                var table = $('#bannerTable').DataTable();
-                table.ajax.reload(); // Reload the data table
+        const formData = new FormData(this); // Use FormData for file uploads
+
+        $.ajax({
+            url: API_URL,
+            type: 'POST',
+            data: formData,
+            contentType: false, // Required for FormData
+            processData: false, // Required for FormData
+            success: function (response) {
+                toastr.success('Your data has ' + messageAction, messageActionheader +' Successful');
+                $('#curriculumModal').modal('hide');
+                table.ajax.reload(); // Reload DataTables
+            },
+            error: function (xhr) {
+                alert('Error processing request: ' + (xhr.responseJSON ? xhr.responseJSON.message : xhr.responseText));
             }
-        },
-        error: function () {
-            alert('An error occurred. Please try again.');
-        }
+        });
     });
-}
-function Disable(id, title) {
-    var currentStatus = $(this).data('status');
-    var newStatus = (currentStatus === 'Inactive') ? 'Active' : 'Inactive';
-    $.ajax({
-        url: `https://api.ontario.edu.kh/curriculum.php?action=update&id=${id}`, // This is your server-side script
-        type: 'POST',
-        data: { id: id, status: newStatus, },
-        success: function (response) {
-            if (response.success) {
-                var table = $('#bannerTable').DataTable();
-                table.ajax.reload(); // Reload the data table
-            } else {
-                var table = $('#bannerTable').DataTable();
-                table.ajax.reload(); // Reload the data table
-            }
-        },
-        error: function () {
-            alert('An error occurred. Please try again.');
-        }
-    });
-}
+
+});
 function readURL() {
     const preview = document.getElementById('image_preview_img'); // An <img> tag for preview
     const file = document.querySelector('input[type=file]').files[0]; // The selected file
@@ -242,31 +165,3 @@ function readURL() {
         reader.readAsDataURL(file); // Read the file as a data URL
     }
 }
-
-function Cleardata() {
-    const image_preview_img=document.getElementById('image_preview_img')
-    var enable = "Enable";
-    btnsubmit.disabled = false;
-    create_by.style.display = 'none';
-    create_date.style.display = 'none';
-    updat_date.style.display = 'none';
-    Active.style.display = 'none';
-    current_image_preview.style.display = 'block'
-    // current_image_preview.src='dsfd'
-    $('#id').val('');
-    $('#title').val('');
-    $('#description').val('');
-    $('#status').val('Active');
-    $('#create_by').val(loggedEmail);
-    $('#create_date').val('');
-    $('#update_date').val('');
-    $('#image_preview_img').attr('src', 'https://w7.pngwing.com/pngs/819/548/png-transparent-photo-image-landscape-icon-images-thumbnail.png')
-    $('#title').focus();
-    // var action = '';
-    const saveBtn = document.getElementById('saveBtn');
-    saveBtn.innerHTML = '<i class="bi bi-plus-circle-fill"></i> Create';
-}
-$(document).ready(function () {
-    // Function to fetch data and display cards
-    
-});

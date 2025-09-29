@@ -16,7 +16,7 @@ $(document).ready(function () {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "https://api.ontario.edu.kh/FACILITIES.php?action=read", // API endpoint for reading data
+            "url": "https://api.ontario.edu.kh/curriculum.php?action=read", // API endpoint for reading data
             "type": "GET"
         },
         "columns": [
@@ -26,7 +26,8 @@ $(document).ready(function () {
                     return meta.row + 1; // Auto-incrementing value
                 }
             },
-            { "data": "title", className: 'battambang-regular' },
+            { "data": "titleEN", className: 'battambang-regular' },
+            { "data": "titleKH", className: 'battambang-regular' },
             {
                 "data": "description", className: 'battambang-regular',
                 "render": function (data) {
@@ -93,7 +94,7 @@ $(document).ready(function () {
 
 
         $.ajax({
-            url: `https://api.ontario.edu.kh/FACILITIES.php?action=${action}`,
+            url: `https://api.ontario.edu.kh/curriculum.php?action=${action}`,
             type: 'POST',
             data: formData,
             contentType: false,
@@ -114,7 +115,7 @@ $(document).ready(function () {
     $(document).on('click', '.edit-btn', function () {
         const id = $(this).data('id');
         $.ajax({
-            url: `https://api.ontario.edu.kh/FACILITIES.php?action=read&id=${id}`,
+            url: `https://api.ontario.edu.kh/curriculum.php?action=read&id=${id}`,
             type: 'GET',
             success: function (response) {
                 const data = JSON.parse(JSON.stringify(response));
@@ -128,7 +129,8 @@ $(document).ready(function () {
                 if (data.status === 'success' && data.data.length > 0) {
                     const banner = data.data[0];
                     $('#banner_id').val(banner.id);
-                    $('#title').val(banner.title);
+                    $('#titleEN').val(banner.titleEN);
+                    $('#title_KH').val(banner.title_KH);
                     quill.root.innerHTML = banner.description;
                     $('#status').val(banner.status);
                     $('#create_by').val(loggedEmail);
@@ -157,7 +159,7 @@ $(document).ready(function () {
         const id = $(this).data('id');
         if (confirm('Are you sure you want to delete this banner?')) {
             $.ajax({
-                url: `https://api.ontario.edu.kh/FACILITIES.php?action=delete&id=${id}`,
+                url: `https://api.ontario.edu.kh/curriculum.php?action=delete&id=${id}`,
                 type: 'POST',
                 success: function (result) {
                     var table = $('#bannerTable').DataTable();
@@ -183,13 +185,13 @@ $('.update-status').on('click', function () {
     let name = $row.find('td:eq(1)').text(); // First td (index 0)
 });
 function Aprove(id, title) {
-    const titleA = document.getElementById('title');
+    const titleA = document.getElementById('titleEN');
     titleA = title.val()
     var currentStatus = $(this).data('status');
     var newStatus = (currentStatus === 'Active') ? 'Inactive' : 'Active';
     alert(titleAs)
     $.ajax({
-        url: `https://api.ontario.edu.kh/FACILITIES.php?action=update&id=${id}`, // This is your server-side script
+        url: `https://api.ontario.edu.kh/curriculum.php?action=update&id=${id}`, // This is your server-side script
         type: 'POST',
         data: { id: id, status: newStatus, },
         success: function (response) {
@@ -210,7 +212,7 @@ function Disable(id, title) {
     var currentStatus = $(this).data('status');
     var newStatus = (currentStatus === 'Inactive') ? 'Active' : 'Inactive';
     $.ajax({
-        url: `https://api.ontario.edu.kh/FACILITIES.php?action=update&id=${id}`, // This is your server-side script
+        url: `https://api.ontario.edu.kh/curriculum.php?action=update&id=${id}`, // This is your server-side script
         type: 'POST',
         data: { id: id, status: newStatus, },
         success: function (response) {
@@ -249,17 +251,17 @@ function Cleardata() {
     create_by.style.display = 'none';
     create_date.style.display = 'none';
     updat_date.style.display = 'none';
-    Active.style.display = 'none';
+    // Active.style.display = 'none';
     current_image_preview.style.display = 'block'
     $('#id').val('');
-    $('#title').val('');
+    $('#titleEN').val('');
     $('#description').val('');
     $('#status').val('Active');
     $('#create_by').val(loggedEmail);
     $('#create_date').val('');
     $('#update_date').val('');
     $('#image_preview_img').attr('src', 'https://w7.pngwing.com/pngs/819/548/png-transparent-photo-image-landscape-icon-images-thumbnail.png')
-    $('#title').focus();
+    $('#titleEN').focus();
     // var action = '';
     const saveBtn = document.getElementById('saveBtn');
     saveBtn.innerHTML = '<i class="bi bi-plus-circle-fill"></i> Create';
