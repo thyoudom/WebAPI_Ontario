@@ -25,13 +25,15 @@
         }
 
         .card-img-top {
-            height: 150px;
             object-fit: cover;
+            width: 100%;
         }
 
         .card-behave {
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), inset 0 0 0px 0px rgba(0, 0, 0, 0.19);
             border-radius: 5px;
+            /* max-width: fit-content; */
+            width: 30%;
         }
     </style>
 </head>
@@ -44,7 +46,7 @@
     </div>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
-        
+
         const cardContainer = document.getElementById('card-container');
         const API_URL = 'https://api.ontario.edu.kh/SliderAPI.php'; // Fetches 100 photos
         // Function to fetch data from the API and render cards
@@ -70,7 +72,7 @@
         // Function to create a single card element
         const createCard = (data) => {
             const cardCol = document.createElement('div');
-            cardCol.className = 'col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center card-behave';
+            cardCol.className = 'col-md-3 d-flex justify-content-center card-behave';
 
             const card = document.createElement('div');
             card.className = 'card shadow-sm card-item';

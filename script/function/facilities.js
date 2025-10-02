@@ -16,7 +16,7 @@ $(document).ready(function () {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "https://api.ontario.edu.kh/FACILITIES.php?action=read", // API endpoint for reading data
+            "url": "https://api.ontario.edu.kh/facelity.php?action=read", // API endpoint for reading data
             "type": "GET"
         },
         "columns": [
@@ -93,7 +93,7 @@ $(document).ready(function () {
 
 
         $.ajax({
-            url: `https://api.ontario.edu.kh/FACILITIES.php?action=${action}`,
+            url: `https://api.ontario.edu.kh/facelity.php?action=${action}`,
             type: 'POST',
             data: formData,
             contentType: false,
@@ -114,7 +114,7 @@ $(document).ready(function () {
     $(document).on('click', '.edit-btn', function () {
         const id = $(this).data('id');
         $.ajax({
-            url: `https://api.ontario.edu.kh/FACILITIES.php?action=read&id=${id}`,
+            url: `https://api.ontario.edu.kh/facelity.php?action=read&id=${id}`,
             type: 'GET',
             success: function (response) {
                 const data = JSON.parse(JSON.stringify(response));
@@ -157,7 +157,7 @@ $(document).ready(function () {
         const id = $(this).data('id');
         if (confirm('Are you sure you want to delete this banner?')) {
             $.ajax({
-                url: `https://api.ontario.edu.kh/FACILITIES.php?action=delete&id=${id}`,
+                url: `https://api.ontario.edu.kh/facelity.php?action=delete&id=${id}`,
                 type: 'POST',
                 success: function (result) {
                     var table = $('#bannerTable').DataTable();
@@ -189,7 +189,7 @@ function Aprove(id, title) {
     var newStatus = (currentStatus === 'Active') ? 'Inactive' : 'Active';
     alert(titleAs)
     $.ajax({
-        url: `https://api.ontario.edu.kh/FACILITIES.php?action=update&id=${id}`, // This is your server-side script
+        url: `https://api.ontario.edu.kh/facelity.php?action=update&id=${id}`, // This is your server-side script
         type: 'POST',
         data: { id: id, status: newStatus, },
         success: function (response) {
@@ -210,7 +210,7 @@ function Disable(id, title) {
     var currentStatus = $(this).data('status');
     var newStatus = (currentStatus === 'Inactive') ? 'Active' : 'Inactive';
     $.ajax({
-        url: `https://api.ontario.edu.kh/FACILITIES.php?action=update&id=${id}`, // This is your server-side script
+        url: `https://api.ontario.edu.kh/facelity.php?action=update&id=${id}`, // This is your server-side script
         type: 'POST',
         data: { id: id, status: newStatus, },
         success: function (response) {

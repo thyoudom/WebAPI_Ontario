@@ -11,29 +11,34 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <link rel="stylesheet" href="stylecss/index.css">
+    <link rel="stylesheet" href="stylecss/tablestyle.css">
     ​<style>
         .modal-custom-width {
             --bs-modal-width: 900px;
             /* Use CSS variables for a modern approach */
+        }
+        .matop{
+            margin-top: 25px;
         }
     </style>
 </head>
 
 <body>
     <div class="card">
-        <div class="card-header sticky-top">
-            <div class="row display-fix row align-items-center bg-light">
+        <div class="card-header">
+            <div class="row row align-items-center bg-light">
                 <div class="col-md-8" style="vertical-align: baseline;margin: auto;">
                     <h3 class="battambang-black">Curriculum Management</h3>
                 </div>
                 <div class="col-md-4" style="margin-top: 10px;">
-                    <button type="button" class="btn btn-primary mb-3 float-end" data-bs-toggle="modal"
+                    <button type="button" class="btn btn-primary mb-3 float-end battambang-black" data-bs-toggle="modal"
                         data-bs-target="#curriculumModal" id="addNewBtn" style="vertical-align: baseline;margin: auto;">
-                        <i class="bi bi-plus-circle-fill"></i> Add New Curriculum
+                        <i class="bi bi-plus-circle-fill"></i>&nbsp; Add New Curriculum
                     </button>
                 </div>
             </div>
         </div>
+        
         <div class="scrollable-body">
             <div class="card-body">
                 <table id="curriculumTable" class="table table-striped table-bordered" style="width:100%">

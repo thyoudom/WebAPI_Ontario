@@ -2,14 +2,14 @@
 <ul class="nav nav-pills flex-column mb-auto">
     
     <li class="nav-item">
-        <a href="#" class="nav-link active" aria-current="page" data-page="home" onclick="loadContent('home')">
+        <a href="#" class="nav-link active" aria-current="page" data-page="home" data-translate="home" onclick="loadContent('home')">
             <i class="bi bi-house-door me-2"></i>Dashboard
         </a>
     </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-bs-toggle="collapse"
-            data-bs-target="#pages-collapse" aria-expanded="false" data-page="pages">
-            <i class="bi bi-file-earmark-text me-2"></i> About Us
+            data-bs-target="#pages-collapse" aria-expanded="false" data-page="pages" data-translate="about">
+            <i class="bi bi-file-earmark-text me-2"></i> About Us 
         </a>
         <div class="collapse" id="pages-collapse">
             <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ps-4">
@@ -21,8 +21,10 @@
                 </li>
                 <li class="spacingli"></li>
                 <li><a href="#" class="nav-link py-2" aria-current="page" data-page="curriculum" onclick="loadContent('curriculum')"><i class="bi bi-amd"></i>&nbsp; CURRICULUM</a> </li>
+                <li><a href="#" class="nav-link py-2" aria-current="page" data-page="testimonial" onclick="loadContent('testimonial')"><i class="bi bi-amd"></i>&nbsp; Parents testimonial</a> </li>
                 <li class="spacingli"></li>
                 <li><a href="#" class="nav-link py-2" data-page="page2" data-page="facilities" onclick="loadContent('facilities')"><i class="bi bi-building-fill-add"></i> &nbsp; SCHOOL FACILITIES</a></li>
+                <li><a href="#" class="nav-link py-2" data-page="page2" data-page="askQuestion" onclick="loadContent('askQuestion')"><i class="bi bi-building-fill-add"></i> &nbsp; Ask and Question</a></li>
                 <li class="spacingli"></li>
                 <li><a href="#" class="nav-link py-2" data-page="page3"><i class="bi bi-chat-right-quote-fill"></i> &nbsp; PARENT TESTIMONIAL</a></li>
                 <li class="spacingli"></li>
@@ -149,6 +151,9 @@
     function loadContent(page) {
         let url;
         switch (page) {
+            case 'testimonial':
+                url = 'parrentsTestimonial.html';
+                break;
             case 'home':
                 url = 'home.html';
                 break;
@@ -160,6 +165,9 @@
                 break;
             case 'facilities':
                 url = 'facilities.html';
+                break;
+            case 'askQuestion':
+                url = 'askQuestion.html';
                 break;
             default:
                 url = 'home.html';

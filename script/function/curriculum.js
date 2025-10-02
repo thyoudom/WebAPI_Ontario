@@ -43,7 +43,11 @@ $(document).ready(function () {
                 <button class="btn btn-sm btn-warning edit-btn"><i class="bi bi-pencil-square"></i> Edit</button>
                 <button class="btn btn-sm btn-danger delete-btn"><i class="bi bi-trash3"></i> Delete</button>
             `}
-        ]
+        ],
+        destroy: true,
+        "order": [[0, "desc"]],
+        "info": false,
+        "paging": true,
     });
 
     // --- Modal Reset on New Button Click ---

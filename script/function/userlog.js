@@ -9,6 +9,7 @@ const submitBtn = document.getElementById('submitBtn');
 const buttonText = document.getElementById('buttonText');
 const loadingSpinner = document.getElementById('loadingSpinner');
 
+
 // Function to display messages to the user
 function showMessage(text, type) {
     messageDiv.classList.remove('d-none', 'alert-success', 'alert-danger');
@@ -73,6 +74,7 @@ loginForm.addEventListener('submit', async (event) => {
             // Store the logged-in user's email in sessionStorage
             sessionStorage.setItem('loggedInUserEmail', email);
             // Redirect to the Home page
+            
             window.location.href = './index.html'; // Ensure Home.html is in the same directory
         } else {
             showMessage(`Login failed: ${result.message || 'Invalid credentials.'}`, 'danger');

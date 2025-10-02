@@ -273,13 +273,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function onloadUser() {
     const userEmailDisplay = document.getElementById('userEmailDisplay');
-
+    const textLog = document.getElementById('getuserEmailDisplay');
 
     // Retrieve the email from sessionStorage
     const loggedInUserEmail = sessionStorage.getItem('loggedInUserEmail');
 
     if (loggedInUserEmail) { 
         userEmailDisplay.textContent =' '+ loggedInUserEmail;
+        textLog.textContent= '' + loggedInUserEmail;
     } else {
         // If no email is found, redirect back to the login page
         userEmailDisplay.textContent = 'Loading user info...';
