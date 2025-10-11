@@ -201,6 +201,7 @@ iframe {
 
 .tableimage {
     width: 3%;
+    height: auto;
     text-align: center;
 }
 

@@ -20,11 +20,13 @@
                     </a>
                 </li>
                 <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" aria-current="page" data-page="studentActivity" onclick="loadContent('studentActivity')"><i class="bi bi-person-arms-up"></i>&nbsp; Student Activity</a> </li>
                 <li><a href="#" class="nav-link py-2" aria-current="page" data-page="curriculum" onclick="loadContent('curriculum')"><i class="bi bi-amd"></i>&nbsp; CURRICULUM</a> </li>
                 <li><a href="#" class="nav-link py-2" aria-current="page" data-page="testimonial" onclick="loadContent('testimonial')"><i class="bi bi-amd"></i>&nbsp; Parents testimonial</a> </li>
                 <li class="spacingli"></li>
                 <li><a href="#" class="nav-link py-2" data-page="page2" data-page="facilities" onclick="loadContent('facilities')"><i class="bi bi-building-fill-add"></i> &nbsp; SCHOOL FACILITIES</a></li>
                 <li><a href="#" class="nav-link py-2" data-page="page2" data-page="askQuestion" onclick="loadContent('askQuestion')"><i class="bi bi-building-fill-add"></i> &nbsp; Ask and Question</a></li>
+                <li><a href="#" class="nav-link py-2" data-page="page2" data-page="page1" onclick="loadContent('page1')"><i class="bi bi-building-fill-add"></i> &nbsp; Page</a></li>
                 <li class="spacingli"></li>
                 <li><a href="#" class="nav-link py-2" data-page="page3"><i class="bi bi-chat-right-quote-fill"></i> &nbsp; PARENT TESTIMONIAL</a></li>
                 <li class="spacingli"></li>
@@ -56,6 +58,7 @@
                 <li class="spacingli"></li>
                 <li><a href="#" class="nav-link py-2" data-page="page13">PARENTING TIPS</a></li>
                 <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" data-page="page14">RESEARCH ARTICLES</a></li>
                 <li><a href="#" class="nav-link py-2" data-page="page14">RESEARCH ARTICLES</a></li>
             </ul>
         </div>
@@ -151,6 +154,9 @@
     function loadContent(page) {
         let url;
         switch (page) {
+            case 'studentActivity':
+                url = 'studentActivity.html';
+                break;
             case 'testimonial':
                 url = 'parrentsTestimonial.html';
                 break;
@@ -168,6 +174,9 @@
                 break;
             case 'askQuestion':
                 url = 'askQuestion.html';
+                break;
+            case 'page1':
+                url = 'page1.html';
                 break;
             default:
                 url = 'home.html';
