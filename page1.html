@@ -167,6 +167,14 @@
                 }
             }
         });
+        const receivedId = localStorage.getItem('myStoredId'); // Or sessionStorage.getItem()
+
+        if (receivedId) {
+        console.log("Received ID from storage:", receivedId);
+        alert(receivedId)
+        // Use the receivedId
+        localStorage.removeItem('myStoredId'); // Optional: remove the item after use
+        }
     </script>
 </body>
 </html>

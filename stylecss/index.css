@@ -279,3 +279,6 @@ iframe {
     /* Enable vertical scrolling */
     padding: 15px;
 }
+.skiptranslate {
+    display: none !important;
+}

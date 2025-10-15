@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banner Slides</title>
+    <title>New Event</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
@@ -27,12 +27,13 @@
     <div class="card">
         <div class="card-header">
             <div class="row row align-items-center bg-light">
+                <a href="page1.html">Click</a>
                 <div class="col-md-8" style="vertical-align: baseline;margin: auto;">
                     <h3 class="battambang-black">Sudent Activity Management</h3>
                 </div>
                 <div class="col-md-4" style="margin-top: 10px;">
                     <button type="button" class="btn btn-primary mb-3 float-end battambang-black" data-bs-toggle="modal"
-                        data-bs-target="#studentACTModal" id="addNewBtn" style="vertical-align: baseline;margin: auto;">
+                        data-bs-target="#newEventUpdateModal" id="addNewBtn" style="vertical-align: baseline;margin: auto;">
                         <i class="bi bi-plus-circle-fill"></i>&nbsp; Add New Curriculum
                     </button>
                 </div>
@@ -60,11 +61,11 @@
     </div>
 
 
-    <div class="modal fade" id="studentACTModal" tabindex="-1" aria-labelledby="curriculumModalLabel"
+    <div class="modal fade" id="newEventUpdateModal" tabindex="-1" aria-labelledby="curriculumModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-custom-width">
             <div class="modal-content">
-                <form id="curriculumForm" enctype="multipart/form-data">
+                <form id="askQuestForm" enctype="multipart/form-data">
 
 
                     <div class="modal-body">
@@ -131,13 +132,90 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="addnew_EventModal" tabindex="-1" aria-labelledby="addnew_EventModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-custom-width">
+            <div class="modal-content">
+                <form id="askQuestForm" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addnew_EventModalLabel">Create Curriculum</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <input type="hidden" id="id" name="id">
+                                 <input type="text" class="form-control battambang-regular" id="newevent_id"
+                                name="newevent_id" required>
+                                <input type="hidden" id="action" name="action" value="create">
+                                <label for="title_En" class="form-label">Title (English)</label>
+                                <input type="text" class="form-control" id="title_En" name="title_En" required>
+                            </div>
+                            <div class="col">
+                                <label for="title_KH" class="form-label">Title (Khmer)</label>
+                                <input type="text" class="form-control" id="title_KH" name="title_KH" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="images" class="form-label">Images (File Upload)</label>
+                                <input type="file" class="form-control" id="images" onchange="readURL(this)"
+                                    name="images" accept="image/*">
+                            </div>
+                            <div class="col">
+                                <p>Current Image:</p>
+                                <img id="image_preview_img" src="" alt="Current Image" style="max-width: 100px;">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+
+                            <div id="current_image_preview" class="mt-2">
+
+                            </div>
+                        </div>
+
+                        <div class="mb-3" style="display: none;">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-select" id="status" name="status" required>
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">Save changes</button>
+                    </div>
+                </form>
+                <div class="scrollable-body">
+            <div class="card-body">
+                <table id="addminageNewEventTable" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="battambang-bold tableID ">ID</th>
+                            <th class="battambang-bold tabltitle ">Title</th>
+                            <th class="battambang-bold tabltitle ">Title</th>
+                            <th class="battambang-bold tableimage ">Image</th>
+                            <th class="battambang-bold tableaction">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script> <!-- message toastr -->
-    <script src="script/function/studentActivity.js"></script>
+    <script src="script/function/newEventUpdate.js"></script>
+    <script src="script/function/addNewEventImag.js"></script>
     <script src="script/toastrmessage.js"></script>
 </body>
 

@@ -1,54 +1,25 @@
 $(document).ready(function () {
     // --- API Configuration ---
-    const btnsubmit = document.getElementById('submitBtn')
-    const API_URL = 'https://api.ontario.edu.kh/studentACT.php'; // **<-- CHANGE THIS TO YOUR ACTUAL API PATH**
-    const quill_EN = new Quill('#description_EN_editor', {
-        theme: 'snow'
-    });
-    const quill_KH = new Quill('#description_KH_editor', {
-        theme: 'snow'
-    });
-    const table = $('#curriculumTable').DataTable({
-        "processing": true,
-        "serverSide": false, // Use client-side processing for this example
-        "ajax": {
-            "url": API_URL + '?action=read',
-            "dataSrc": "data"
-        },
-        "columns": [
-            {
-                "data": "id", className: 'battambang-regular text-center',
-                render: function (data, type, row, meta) {
-                    return meta.row + 1; // Auto-incrementing value
-                }
-            },
-            { "data": "title_En", className: 'battambang-regular' },
-            { "data": "title_KH", className: 'battambang-regular' },
-            {
-                "data": "images", className: 'battambang-regular text-center',
-                "render": function (data, type, row) {
-                    if (data) {
-                        return `<img src="https://api.ontario.edu.kh/${data}" alt="Banner Image" style="height: 50px; width:40px">`;
-                    }
-                    return '';
-                }
-            },
-            {
-                "data": "status", className: 'battambang-regular text-center', "render": function (data) {
-                    return data == '1' ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-secondary">Inactive</span>';
-                }
-            },
-            {
-                "data": null, "defaultContent": `
-                <button class="btn btn-sm btn-warning edit-btn"><i class="bi bi-pencil-square"></i> Edit</button>
-                <button class="btn btn-sm btn-danger delete-btn"><i class="bi bi-trash3"></i> Delete</button>
-            `}
-        ],
-        destroy: true,
-        "order": [[0, "desc"]],
-        "info": false,
-        "paging": true,
-    });
+    // const btnsubmit = document.getElementById('submitBtn')
+    
+
+
+});
+function readURL() {
+    const preview = document.getElementById('image_preview_img'); // An <img> tag for preview
+    const file = document.querySelector('input[type=file]').files[0]; // The selected file
+    const reader = new FileReader();
+
+    reader.addEventListener("load", function () {
+        // Convert file to base64 string and set as src
+        preview.src = reader.result;
+        preview.style.display = 'block';
+    }, false);
+
+    if (file) {
+        reader.readAsDataURL(file); // Read the file as a data URL
+    }
+}
 
     // --- Modal Reset on New Button Click ---
     $('#addNewBtn').on('click', function () {
@@ -94,7 +65,7 @@ $(document).ready(function () {
             }
 
             // Show modal
-            $('#studentACTModal').modal('show');
+            $('#curriculumModal').modal('show');
         }).fail(function () {
             alert('Failed to fetch data for editing.');
         });
@@ -144,7 +115,7 @@ $(document).ready(function () {
             processData: false, // Required for FormData
             success: function (response) {
                 toastr.success('Your data has ' + messageAction, messageActionheader +' Successful');
-                $('#studentACTModal').modal('hide');
+                $('#curriculumModal').modal('hide');
                 table.ajax.reload(); // Reload DataTables
             },
             error: function (xhr) {
@@ -152,20 +123,3 @@ $(document).ready(function () {
             }
         });
     });
-
-});
-function readURL() {
-    const preview = document.getElementById('image_preview_img'); // An <img> tag for preview
-    const file = document.querySelector('input[type=file]').files[0]; // The selected file
-    const reader = new FileReader();
-
-    reader.addEventListener("load", function () {
-        // Convert file to base64 string and set as src
-        preview.src = reader.result;
-        preview.style.display = 'block';
-    }, false);
-
-    if (file) {
-        reader.readAsDataURL(file); // Read the file as a data URL
-    }
-}
