@@ -1,18 +1,284 @@
-<style>
-    .page2-content {
-        background-color: #fff0e6;
-        border: 1px solid #ffbf80;
-        padding: 20px;
-        font-family: monospace;
-    }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/quill@1.3.6/dist/quill.snow.css" rel="stylesheet">
+    <style>
+        /* Optional: Adjust Quill editor height for the modal */
+        .quill-editor-container {
+            height: 200px;
+        }
+        #job_description_editor {
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
 
-<div class="page2-content">
-    <h2>This is Page 2</h2>
-    <p>This content is also loaded dynamically.</p>
+<div class="container mt-5">
+    <h2 class="mb-4">💼 Career Postings Management</h2>
+
+    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#careerModal" id="btnAddCareer">
+        ➕ Add New Career Post
+    </button>
+
+    <div class="table-responsive">
+        <table id="careerTable" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Job Title</th>
+                    <th>Position Title</th>
+                    <th>Post Count</th>
+                    <th>Salary</th>
+                    <th>Schedule</th>
+                    <th>Status</th>
+                    <th>Issue/Expire</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
 </div>
+
+<div class="modal fade" id="careerModal" tabindex="-1" aria-labelledby="careerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="careerModalLabel">Career Post Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="careerForm" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="job_id">
+                    <input type="hidden" name="action" id="action" value="create">
+                    <input type="hidden" name="old_image_file" id="old_image_file">
+                    <input type="hidden" name="description" id="hidden_description"> <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="job_title" class="form-label">Job Title</label>
+                            <input type="text" class="form-control" id="job_title" name="job_title" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="position_title" class="form-label">Position Title</label>
+                            <input type="text" class="form-control" id="position_title" name="position_title" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="number_Post" class="form-label">Number of Posts</label>
+                            <input type="number" class="form-control" id="number_Post" name="number_Post" required min="1">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="schedule" class="form-label">Schedule</label>
+                            <select class="form-select" id="schedule" name="schedule" required>
+                                <option value="">Select Schedule</option>
+                                <option value="Full-Time">Full-Time</option>
+                                <option value="Part-Time">Part-Time</option>
+                                <option value="Contract">Contract</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="salary" class="form-label">Salary (e.g., $50k - $70k)</label>
+                            <input type="text" class="form-control" id="salary" name="salary">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="issue_date" class="form-label">Issue Date</label>
+                            <input type="date" class="form-control" id="issue_date" name="issue_date" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="expire_date" class="form-label">Expire Date</label>
+                            <input type="date" class="form-control" id="expire_date" name="expire_date" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-select" id="status" name="status" required>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="col-md-8">
+                            <label for="image_file" class="form-label">Job Image (Optional)</label>
+                            <input class="form-control" type="file" id="image_file" name="image_file" accept="image/*">
+                            <small class="text-muted" id="current_image_display"></small>
+                        </div>
+                        <div class="col-12">
+                            <label for="job_description_editor" class="form-label">Description</label>
+                            <div id="job_description_editor" class="quill-editor-container"></div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btnSave">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@1.3.6/dist/quill.min.js"></script>
+
 <script>
-    alert('page2');
-    console.log('Page2');
-    
+$(document).ready(function() {
+    // 1. Initialize Quill Editor
+    var quill = new Quill('#job_description_editor', {
+        theme: 'snow',
+        placeholder: 'Enter job description details here...',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                [{ 'color': [] }, { 'background': [] }],
+                ['clean']
+            ]
+        }
+    });
+
+    // 2. Initialize DataTables
+    var careerTable = $('#careerTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "https://api.ontario.edu.kh/API/Career/career.php",
+            "type": "POST",
+            "data": { "action": "read" }
+        },
+        "columns": [
+            { "data": "id" },
+            { "data": "job_title" },
+            { "data": "position_title" },
+            { "data": "number_Post" },
+            { "data": "salary" },
+            { "data": "schedule" },
+            { "data": "status" },
+            { "data": null, "render": function(data, type, row) {
+                return `**Issue:** ${row.issue_date}<br>**Expire:** ${row.expire_date}`;
+            }},
+            { "data": null, "defaultContent": `
+                <button class='btn btn-sm btn-info edit-btn me-2'>Edit</button>
+                <button class='btn btn-sm btn-danger delete-btn'>Delete</button>
+            `}
+        ],
+        "order": [[0, 'desc']]
+    });
+
+    // 3. Modal Reset on Hide
+    $('#careerModal').on('hidden.bs.modal', function () {
+        $('#careerForm')[0].reset();
+        $('#action').val('create');
+        $('#job_id').val('');
+        $('#careerModalLabel').text('Add New Career Post');
+        $('#current_image_display').text('');
+        quill.setText(''); // Clear Quill content
+        $('#image_file').prop('required', false); // No required file on update/new
+    });
+
+    // 4. Edit Button Handler
+    $('#careerTable tbody').on('click', '.edit-btn', function () {
+        var data = careerTable.row($(this).parents('tr')).data();
+
+        $('#careerModalLabel').text('Edit Career Post (ID: ' + data.id + ')');
+        $('#action').val('update');
+        $('#job_id').val(data.id);
+
+        // Populate form fields
+        $('#job_title').val(data.job_title);
+        $('#position_title').val(data.position_title);
+        $('#number_Post').val(data.number_Post);
+        $('#schedule').val(data.schedule);
+        $('#salary').val(data.salary);
+        $('#status').val(data.status);
+        $('#issue_date').val(data.issue_date);
+        $('#expire_date').val(data.expire_date);
+        
+        // Handle image and old file
+        $('#old_image_file').val(data.image_file);
+        if (data.image_file) {
+            $('#current_image_display').html('Current File: <strong>' + data.image_file + '</strong>. Choose a new file to replace.');
+        } else {
+            $('#current_image_display').text('No current image file.');
+        }
+
+        // Set Quill content from the record's description (HTML)
+        quill.root.innerHTML = data.description;
+        
+        // Show modal
+        new bootstrap.Modal(document.getElementById('careerModal')).show();
+    });
+
+    // 5. Delete Button Handler
+    $('#careerTable tbody').on('click', '.delete-btn', function () {
+        var data = careerTable.row($(this).parents('tr')).data();
+
+        if (confirm('Are you sure you want to delete the career post: "' + data.job_title + '" (ID: ' + data.id + ')?')) {
+            $.ajax({
+                url: 'https://api.ontario.edu.kh/API/Career/career.php',
+                type: 'POST',
+                data: {
+                    action: 'delete',
+                    id: data.id,
+                    image_file: data.image_file // Pass the image file name for server-side deletion
+                },
+                success: function(response) {
+                    var res = JSON.parse(response);
+                    if (res.success) {
+                        alert(res.message);
+                        careerTable.ajax.reload(null, false); // Reload DataTable
+                    } else {
+                        alert('Error: ' + res.message);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred during deletion.');
+                }
+            });
+        }
+    });
+
+    // 6. Form Submission (Create/Update)
+    $('#careerForm').on('submit', function(e) {
+        e.preventDefault();
+
+        // Put the HTML content from Quill into the hidden field
+        $('#hidden_description').val(quill.root.innerHTML);
+
+        var formData = new FormData(this); // Use FormData for file upload
+
+        $.ajax({
+            url: 'https://api.ontario.edu.kh/API/Career/career.php',
+            type: 'POST',
+            data: formData,
+            contentType: false, // Important for FormData
+            processData: false, // Important for FormData
+            success: function(response) {
+                var res = JSON.parse(response);
+                if (res.success) {
+                    alert(res.message);
+                    $('#careerModal').modal('hide'); // Hide modal
+                    careerTable.ajax.reload(null, false); // Reload DataTable
+                } else {
+                    alert('Error: ' + res.message);
+                }
+            },
+            error: function() {
+                alert('An error occurred during submission.');
+            }
+        });
+    });
+
+});
 </script>
+
+</body>
+</html>

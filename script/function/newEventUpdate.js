@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // --- API Configuration ---
     const btnsubmit = document.getElementById('submitBtn')
-    const API_URL = 'https://api.ontario.edu.kh/studentACT.php'; // **<-- CHANGE THIS TO YOUR ACTUAL API PATH**
+    const API_URL = 'https://api.ontario.edu.kh/newEventUpdate.php'; // **<-- CHANGE THIS TO YOUR ACTUAL API PATH**
     const quill_EN = new Quill('#description_EN_editor', {
         theme: 'snow'
     });
@@ -35,14 +35,21 @@ $(document).ready(function () {
             },
             {
                 "data": "status", className: 'battambang-regular text-center', "render": function (data) {
-                    return data == '1' ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-secondary">Inactive</span>';
+                    return data == 'Active' ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-secondary">Inactive</span>';
                 }
             },
             {
                 "data": null, "defaultContent": `
                 <button class="btn btn-sm btn-warning edit-btn"><i class="bi bi-pencil-square"></i> Edit</button>
                 <button class="btn btn-sm btn-danger delete-btn"><i class="bi bi-trash3"></i> Delete</button>
-            `}
+            `},
+            
+            {
+                data: "id",
+                render: function (data) {
+                    return "<button onclick='ProductImage(" + data + ")' class='btn btn-primary btn-xs' style='border-width: 0px; width: 65px; margin-right: 5px;'><span class='glyphicon glyphicon-eye-open'></span>Images</button>";
+                }
+            }
         ],
         destroy: true,
         "order": [[0, "desc"]],
@@ -94,7 +101,7 @@ $(document).ready(function () {
             }
 
             // Show modal
-            $('#studentACTModal').modal('show');
+            $('#curriculumModal').modal('show');
         }).fail(function () {
             alert('Failed to fetch data for editing.');
         });
@@ -144,7 +151,7 @@ $(document).ready(function () {
             processData: false, // Required for FormData
             success: function (response) {
                 toastr.success('Your data has ' + messageAction, messageActionheader +' Successful');
-                $('#studentACTModal').modal('hide');
+                $('#curriculumModal').modal('hide');
                 table.ajax.reload(); // Reload DataTables
             },
             error: function (xhr) {
@@ -168,4 +175,50 @@ function readURL() {
     if (file) {
         reader.readAsDataURL(file); // Read the file as a data URL
     }
+}
+function ProductImage(id) {
+    $("#newevent_id").val(id);
+    const API_URL = 'https://api.ontario.edu.kh/API/newEventUpdateImg/newEventUpdateImg.php'; // **<-- CHANGE THIS TO YOUR ACTUAL API PATH**
+    const newEventid=$("#newevent_id").val(id);
+    const table = $('#addminageNewEventTable').DataTable({
+        "processing": true,
+        "serverSide": false, // Use client-side processing for this example
+        "ajax": {
+            "url": API_URL + '?newevent_id='+id,
+            "dataSrc": "data"
+        },
+        "columns": [
+            {
+                "data": "id", className: 'battambang-regular text-center',
+                render: function (data, type, row, meta) {
+                    return meta.row + 1; // Auto-incrementing value
+                }
+            },
+            { "data": "newevent_id", className: 'battambang-regular' },
+            { "data": "title", className: 'battambang-regular' },
+            {
+                "data": "image_file", className: 'battambang-regular text-center',
+                "render": function (data, type, row) {
+                    if (data) {
+                        return `<img src="https://api.ontario.edu.kh/${data}" alt="Banner Image" style="height: 50px; width:40px">`;
+                    }
+                    return '';
+                }
+            },
+            {
+                "data": null, "defaultContent": `
+                <button class="btn btn-sm btn-warning edit-btn"><i class="bi bi-pencil-square"></i> Edit</button>
+                <button class="btn btn-sm btn-danger delete-btn"><i class="bi bi-trash3"></i> Delete</button>
+            `}
+        ],
+        destroy: true,
+        "order": [[0, "desc"]],
+        "info": false,
+        "paging": true,
+    });
+    $("#addnew_EventModal").modal('show');
+    const idToPass = "anotherUniqueId456";
+    localStorage.setItem('myStoredId', idToPass); // Or sessionStorage.setItem()
+    window.location.href = 'page1.html';
+
 }

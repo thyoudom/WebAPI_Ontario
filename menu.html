@@ -20,6 +20,8 @@
                     </a>
                 </li>
                 <li class="spacingli"></li>
+                <li><a href="#" class="nav-link py-2" aria-current="page" data-page="carreaStaff" onclick="loadContent('carreaStaff')"><i class="bi bi-newspaper"></i>&nbsp; Carrea</a> </li>
+                <li><a href="#" class="nav-link py-2" aria-current="page" data-page="newEventUpdate" onclick="loadContent('newEventUpdate')"><i class="bi bi-newspaper"></i>&nbsp; New Event Update</a> </li>
                 <li><a href="#" class="nav-link py-2" aria-current="page" data-page="studentActivity" onclick="loadContent('studentActivity')"><i class="bi bi-person-arms-up"></i>&nbsp; Student Activity</a> </li>
                 <li><a href="#" class="nav-link py-2" aria-current="page" data-page="curriculum" onclick="loadContent('curriculum')"><i class="bi bi-amd"></i>&nbsp; CURRICULUM</a> </li>
                 <li><a href="#" class="nav-link py-2" aria-current="page" data-page="testimonial" onclick="loadContent('testimonial')"><i class="bi bi-amd"></i>&nbsp; Parents testimonial</a> </li>
@@ -154,6 +156,12 @@
     function loadContent(page) {
         let url;
         switch (page) {
+            case 'newEventUpdate':
+                url = 'newEventUpdate.html';
+                break;
+            case 'carreaStaff':
+                url = 'carrea.html';
+                break;
             case 'studentActivity':
                 url = 'studentActivity.html';
                 break;
@@ -179,7 +187,7 @@
                 url = 'page1.html';
                 break;
             default:
-                url = 'home.html';
+                url = 'home.html'; 
         }
         document.getElementById('content-frame').src = url;
     }
